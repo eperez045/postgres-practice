@@ -48,28 +48,69 @@ One the dvd rental database has been loaded you can start to run the next querie
 
 Get a list of the tables in the database.
 
+SELECT * FROM information_schema.tables;
+
 
 ### Step2: Select
 
 Get a list of actors with the first name Julia.
 
+SELECT first_name, last_name
+FROM actor
+WHERE first_name = 'Julia';
+
 Get a list of actors with the first name Chris, Cameron, or Cuba.
+
+SELECT first_name, last_name
+FROM actor
+WHERE first_name = 'Cameron' OR first_name = 'Cuba' OR first_name = 'Chris';
 
 Select the row from customer for customer named Jamie Rice.
 
+SELECT *
+FROM customer
+WHERE first_name = 'Jamie' AND last_name = 'Rice';
+
 Select amount and payment_date from payment where the amount paid was less than $1.
+
+SELECT payment_date, amount
+FROM payment
+WHERE amount<'1';
 
 ### Step3: Distinct
 
 What are the different rental durations that the store allows?
 
+SELECT MIN(rental_duration), MAX(rental_duration),
+FROM film;
+
 ### Step4: Order By
 
 What are the IDs of the last 3 customers to return a rental?
 
+SELECT customer_id
+FROM rental
+WHERE return_date IS NOT NULL
+ORDER BY return_date DESC
+LIMIT 3;
+
 ### Step5: Counting
 
-How many films are rated NC-17?  How many are rated PG or PG-13?
+How many films are rated NC-17? 
+
+SELECT COUNT(film_id)
+FROM film
+WHERE rating='NC-17';
+
+How many are rated PG or PG-13?
+
+SELECT COUNT(film_id)
+FROM film
+WHERE rating='PG';
+
+SELECT COUNT(film_id)
+FROM film
+WHERE rating='PG-13';
 
 Challenge: How many different customers have entries in the rental table?  [Hint](http://www.w3resource.com/sql/aggregate-functions/count-with-distinct.php)
 
@@ -78,12 +119,20 @@ Challenge: How many different customers have entries in the rental table?  [Hint
 
 Does the average replacement cost of a film differ by rating?
 
+SELECT AVG(replacement_cost), rating
+FROM film
+GROUP BY rating
+ORDER BY AVG(replacement_cost) DESC;
+
 
 Challenge: Are there any customers with the same last name?
 
 ## Step7: Functions
 
 What is the average rental rate of films?  Can you round the result to 2 decimal places?
+
+SELECT ROUND(AVG(rental_rate), 2)
+FROM film;
 
 Challenge: What is the average time that people have rentals before returning?  Hint: the output you'll get may include a number of hours > 24.  You can use the function `justify_interval` on the result to get output that looks more like you might expect.
 
